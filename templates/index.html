@@ -1,0 +1,39 @@
+<div class="container">
+    <div class="row">
+        {% for task in tasks %}
+            <div class="col-md-4">
+                <div class="card" style="width:300px">
+                    <div class="card-body">
+                        {% for task in tasks %}
+                            <h4 class="card-title">Title : {{ task.title }}</h4>
+                            <div>Address : {{ task.address }}</div>
+                            <div>City : {{ task.city }}</div>
+                            <div>&nbsp;</div>
+                            <button class="btn btn-primary"
+                                    id={{ task.id }} onclick="showPopup('{{ task.id }}')">Contact
+                            </button>
+                            <p id="contact"></p>
+                        {% endfor %}
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+                        <script type="text/javascript">
+                            function showPopup(id) {
+                                $.ajax({
+                                    url: "/listings/contact/" + id,
+                                    method: 'GET',
+                                    headers: {'X-CSRFToken': '{{ csrf_token }}'},
+                                    success: function (data) {
+                                        $('#contact').html(data['numbers']);
+                                    }
+
+                                });
+
+                            }
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
